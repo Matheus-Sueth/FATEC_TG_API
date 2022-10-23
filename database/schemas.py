@@ -1,11 +1,15 @@
 from pydantic import BaseModel
+from datetime import time
+
 
 class MessageBase(BaseModel):
     message: str
-    hora: str
+    hora: time
+
 
 class MessageCreate(MessageBase):
     pass
+
 
 class Message(MessageBase):
     id: int
@@ -14,11 +18,14 @@ class Message(MessageBase):
     class Config:
         orm_mode = True
 
+
 class UserBase(BaseModel):
     nome: str
 
+
 class UserCreate(UserBase):
     pass
+
 
 class User(UserBase):
     id: int

@@ -1,6 +1,7 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, TIME
 from sqlalchemy.orm import relationship
 from .database import Base
+
 
 class User(Base):
     __tablename__ = "users"
@@ -16,7 +17,7 @@ class Message(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     message = Column(String, index=True)
-    hora = Column(String)
+    hora = Column(TIME)
     owner_name = Column(String, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="messages")

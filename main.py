@@ -8,8 +8,6 @@ from database.database import SessionLocal, engine
 
 
 models.Base.metadata.create_all(bind=engine)
-
-
 app = FastAPI(title='SELECT MOVIE API', version='1.0.0', description='API para troca de mensagens entre os usuários do sistema')
 security = HTTPBasic()
 
@@ -71,6 +69,7 @@ def create_message_for_user(user_name: str, message: schemas.MessageCreate, db: 
 def read_messages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     messages = crud.get_messages(db, skip, limit)
     return messages
+
 
 @app.on_event("startup")
 @repeat_every(seconds=86400, wait_first=True)
