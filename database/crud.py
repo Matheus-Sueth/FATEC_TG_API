@@ -20,7 +20,7 @@ def delete_user(db: Session, user_id: int):
 
 
 def create_message_user(db: Session, message: schemas.MessageCreate, user_name : str):
-    db_message = models.Message(**message.dict(), owner_name=user_name )
+    db_message = models.Message(**message.dict(), owner_name=user_name)
     db.add(db_message)
     db.commit()
     db.refresh(db_message)

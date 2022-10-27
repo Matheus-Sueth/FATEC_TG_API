@@ -18,6 +18,6 @@ class Message(Base):
     id = Column(Integer, primary_key=True, index=True)
     message = Column(String, index=True)
     hora = Column(TIME)
-    owner_name = Column(String, ForeignKey("users.id"))
+    owner_name = Column(String, ForeignKey("users.nome"))
 
     owner = relationship("User", back_populates="messages")
