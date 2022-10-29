@@ -13,7 +13,7 @@ class MessageCreate(MessageBase):
 
 class Message(MessageBase):
     id: int
-    owner_name: str
+    owner_id: int
 
     class Config:
         orm_mode = True

@@ -31,6 +31,12 @@ def get_credentials(credentials: HTTPBasicCredentials = Depends(security)):
             detail='not authorized', 
             headers={'WWW-Authenticate': 'Basic'})
 
+@app.get("/")
+def index():
+    return {
+        "Documentação Swagger": "https://selectmovietg.herokuapp.com/docs#",
+        "Documentação ReDoc": "https://selectmovietg.herokuapp.com/redoc"
+    }
 
 @app.post("/user/", 
           response_model=schemas.User,
@@ -39,7 +45,7 @@ def get_credentials(credentials: HTTPBasicCredentials = Depends(security)):
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_name(db, user.nome)
     if db_user:
-        raise HTTPException(status_code=400, detail="Name already registered")
+        raise HTTPException(status_code=400, detail="usuario registrado")
     return crud.create_user(db=db, user=user)
 
 
@@ -50,7 +56,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 def read_user_by_name(user_name: str, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_name(db, user_name)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="usuario sem registro")
     return db_user
 
 
@@ -59,6 +65,9 @@ def read_user_by_name(user_name: str, db: Session = Depends(get_db)):
          tags=['Message'],
          dependencies=[Depends(get_credentials)])
 def create_message_for_user(user_name: str, message: schemas.MessageCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_name(db, user_name)
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="usuario sem registro")
     return crud.create_message_user(db, message, user_name)
 
 
@@ -75,6 +84,7 @@ def read_messages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 @repeat_every(seconds=86400, wait_first=True)
 def delete_bd():
     with SessionLocal() as db:
-        lista_users = crud.get_users(db=db, skip=0, limit=100)
+        crud.delete_message(db)
+        lista_users = crud.get_users(db=db)
         for user in lista_users:
             crud.delete_user(db, user.id)
