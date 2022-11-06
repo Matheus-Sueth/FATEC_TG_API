@@ -8,6 +8,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     nome = Column(String, index=True)
+    email = Column(String, index=True)
 
     messages = relationship("Message", back_populates="owner")
 

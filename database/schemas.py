@@ -21,6 +21,7 @@ class Message(MessageBase):
 
 class UserBase(BaseModel):
     nome: str
+    email: str
 
 
 class UserCreate(UserBase):
