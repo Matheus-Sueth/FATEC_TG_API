@@ -18,6 +18,10 @@ def get_user_by_name(db: Session, user: schemas.User):
     return db.query(models.User).filter(models.User.nome == user.nome and models.User.email == user.email).first()
 
 
+def get_name_by_id(db: Session, user_id: int):
+    return db.query(models.User.nome).filter(models.User.id == user_id).first()
+
+
 def delete_user(db: Session, user_id: int):
     db.delete(db.query(models.User).filter(models.User.id == user_id).first())
     db.commit()

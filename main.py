@@ -41,7 +41,7 @@ def index():
     }
 
 
-@app.post("/user/create", 
+@app.post("/user/create/", 
           response_model=schemas.User,
          tags=['User'],
          dependencies=[Depends(get_credentials)])
@@ -52,12 +52,22 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 
-@app.post("/user/read", 
+@app.post("/user/read/name/email/", 
          response_model=schemas.User,
          tags=['User'],
          dependencies=[Depends(get_credentials)])
 def read_user_by_name_and_email(user: schemas.UserBase, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_name(db, user)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="usuario sem registro")
+    return db_user
+
+
+@app.get("/user/read/", 
+         tags=['User'],
+         dependencies=[Depends(get_credentials)])
+def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_name_by_id(db, user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="usuario sem registro")
     return db_user
@@ -84,7 +94,7 @@ def read_messages_by_time(hora: time, db: Session = Depends(get_db)):
 
 
 @app.get("/delete/messages/", 
-         tags=['Message'],
+         tags=['Início'],
          dependencies=[Depends(get_credentials)])
 def delete_database(db: Session = Depends(get_db)):
     crud.delete_message(db)
