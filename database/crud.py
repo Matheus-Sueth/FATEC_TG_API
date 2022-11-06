@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
-from . import models, schemas
-from datetime import time    
+from . import models, schemas 
 
 
 def create_user(db: Session, user: schemas.UserCreate):
@@ -33,7 +32,7 @@ def create_message_user(db: Session, message: schemas.MessageCreate, user: schem
     return db_message
 
 
-def get_messages(db: Session, hora: time):
+def get_messages(db: Session, hora):
     return db.query(models.Message).filter(models.Message.hora >= hora).all()
 
 
