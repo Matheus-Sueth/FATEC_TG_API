@@ -6,6 +6,14 @@ from sqlalchemy.orm import Session
 from database import crud, models, schemas
 from database.database import SessionLocal, engine
 from datetime import time
+from pydantic import BaseModel
+import smtplib
+from email.mime.text import MIMEText
+
+
+class UserPassword(BaseModel):
+    email: str
+    senha_temporaria: str
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -39,6 +47,32 @@ def index():
         "Documentação Swagger": "https://selectmovietg.herokuapp.com/docs#",
         "Documentação ReDoc": "https://selectmovietg.herokuapp.com/redoc"
     }
+
+
+@app.post("/email/",
+          tags=['E-mail'],
+          dependencies=[Depends(get_credentials)])
+def send_email_password(user: UserPassword):
+    smtp_ssl_host = 'smtp.gmail.com'
+    smtp_ssl_port = 465
+    username = ''
+    password = '' 
+    from_addr = user.email
+    to_addrs = [user.email]
+    senha = user.senha_temporaria
+    message = MIMEText(f'Sua senha temporária é {senha}')
+    message['subject'] = 'Aplicativo SM'
+    message['from'] = from_addr
+    message['to'] = ', '.join(to_addrs)
+    try:
+        server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
+        server.login(username, password)
+        server.sendmail(from_addr, to_addrs, message.as_string())
+    except:
+        return {"dados":"falha ao enviar"}
+    finally:
+        server.quit()
+    return {"dados":"enviados"}
 
 
 @app.post("/user/create/", 
