@@ -55,8 +55,8 @@ def index():
 def send_email_password(user: UserPassword):
     smtp_ssl_host = 'smtp.gmail.com'
     smtp_ssl_port = 465
-    username = ''
-    password = '' 
+    username = 'matheuzengenharia@gmail.com'
+    password = 'fntgjqqyslcxazob' 
     from_addr = user.email
     to_addrs = [user.email]
     senha = user.senha_temporaria
