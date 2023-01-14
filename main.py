@@ -44,6 +44,7 @@ def get_credentials(credentials: HTTPBasicCredentials = Depends(security)):
 @app.get("/", tags=['Início'])
 def index():
     return {
+        "project": "SELECT MOVIE API",
         "Documentação Swagger": "https://selectmovietg.herokuapp.com/docs#",
         "Documentação ReDoc": "https://selectmovietg.herokuapp.com/redoc"
     }
