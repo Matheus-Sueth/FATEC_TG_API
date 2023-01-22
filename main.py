@@ -55,9 +55,8 @@ def index() -> str:
 @app.get("/teste/",
          tags=['Início'])
 def teste() -> str:
-    return {
-        "teste": os.environ['TESTE']
-    }
+    lista = list(os.environ['TESTE'])
+    return {id: valor[1] for id, valor in enumerate(lista)}
 
 
 @app.post("/email/",
