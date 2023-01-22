@@ -10,6 +10,7 @@ from pydantic import BaseModel
 import smtplib
 from email.mime.text import MIMEText
 import os
+import json
 
 
 class UserPassword(BaseModel):
@@ -55,8 +56,8 @@ def index() -> str:
 @app.get("/teste/",
          tags=['Início'])
 def teste() -> str:
-    lista = list(os.environ['TESTE'])
-    return {id: valor[1] for id, valor in enumerate(lista)}
+    lista = json.loads(os.environ['TESTE'])
+    return lista
 
 
 @app.post("/email/",
