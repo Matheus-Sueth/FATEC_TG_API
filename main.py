@@ -56,7 +56,7 @@ def index() -> str:
          tags=['Início'])
 def teste() -> str:
     return {
-        "teste": f"{os.environ['TESTE']}"
+        "teste": os.environ['TESTE']
     }
 
 
