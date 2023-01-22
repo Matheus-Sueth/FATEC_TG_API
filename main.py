@@ -9,6 +9,7 @@ from datetime import time
 from pydantic import BaseModel
 import smtplib
 from email.mime.text import MIMEText
+import os
 
 
 class UserPassword(BaseModel):
@@ -41,12 +42,21 @@ def get_credentials(credentials: HTTPBasicCredentials = Depends(security)):
             headers={'WWW-Authenticate': 'Basic'})
 
 
-@app.get("/", tags=['Início'])
-def index():
+@app.get("/",
+         tags=['Início'])
+def index() -> str:
     return {
         "project": "SELECT MOVIE API",
         "Documentação Swagger": "https://selectmovietg.herokuapp.com/docs#",
         "Documentação ReDoc": "https://selectmovietg.herokuapp.com/redoc"
+    }
+
+
+@app.get("/teste/",
+         tags=['Início'])
+def teste() -> str:
+    return {
+        "teste": f"{os.environ['TESTE']}"
     }
 
 
