@@ -11,7 +11,10 @@ import smtplib
 from email.mime.text import MIMEText
 import os
 import json
+from dotenv import load_dotenv
 
+load_dotenv()
+TESTE = json.loads(os.environ['TESTE'])
 
 class UserPassword(BaseModel):
     email: str
@@ -56,8 +59,7 @@ def index() -> str:
 @app.get("/teste/",
          tags=['Início'])
 def teste() -> str:
-    lista = json.loads(os.environ['TESTE'])
-    return lista
+    return TESTE
 
 
 @app.post("/email/",
